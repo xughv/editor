@@ -12,7 +12,8 @@
     <div id="container"></div>
     <script src="/vs/loader.js"></script>
     <script>
-      function createEditor(id, value, language) {
+      var _editors = {};
+      function createEditor(id, value, language, saveFunc) {
         require.config({ paths: { 'vs': '/vs' }});
         require(['vs/editor/editor.main'], function() {
           var editor =
@@ -20,6 +21,10 @@
               value: value,
               language: language
             });
+          var myBinding = editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_S, function() {
+              saveFunc();
+          });
+          _editors[id] = editor;
         });
       }
     </script>

@@ -25,4 +25,5 @@ body {
 .ant-layout-footer {
   padding: 0;
   height: 30%;
+  font-size: 13px;
 }

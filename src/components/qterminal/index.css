@@ -7,11 +7,11 @@
 }
 
 .terminal:not(.focus) .terminal-cursor {
-    outline: 1px solid #333333;
+    outline: 1px solid #000;
 }
 
 .terminal:not(.xterm-cursor-style-underline):not(.xterm-cursor-style-bar) .terminal-cursor {
-    background-color: #333333;
+    background-color: #000;
     color: #fff;
 }
 
@@ -43,7 +43,7 @@
 
 #terminal-container .terminal {
     background-color: #fff;
-    color: #333333;
+    color: #000;
 }
 
 #terminal-container .terminal:focus .terminal-cursor {

@@ -10,7 +10,7 @@
 .ant-tabs-content {
   height: calc(100% - 36px);
   padding-top: 4px;
-  background: #fff;
+  /*background: #fff;*/
 }
 
 .ant-tabs-tabpane {
