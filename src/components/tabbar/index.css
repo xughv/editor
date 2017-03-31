@@ -1,0 +1,31 @@
+.ant-tabs {
+  height: 100%;
+}
+
+.ant-tabs-bar {
+  margin-bottom: 0;
+  border-bottom: none;
+}
+
+.ant-tabs-content {
+  height: calc(100% - 36px);
+  padding-top: 4px;
+  background: #fff;
+}
+
+.ant-tabs-tabpane {
+  height: 100%;
+}
+
+.ant-tabs-nav-container {
+  background: #f3f3f3;
+}
+
+.ant-tabs-tab {
+  padding-right: 4px!important;
+  margin-right: 0!important;
+}
+
+.ant-tabs-tab-active {
+  background: #fff;
+}

@@ -1,0 +1,28 @@
+body {
+  height: 100%;
+}
+
+#container {
+  height: 100%;
+}
+
+.ant-layout-sider {
+  background: #f3f3f3;
+  width: auto!important;
+}
+
+.ant-layout-header {
+  height: inherit;
+  line-height: inherit;
+  background: #f3f3f3;
+}
+
+.ant-layout-content {
+    height: 100%;
+    overflow: hidden;
+}
+
+.ant-layout-footer {
+  padding: 0;
+  height: 30%;
+}

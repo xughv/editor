@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Editor</title>
+    <link rel="stylesheet" href="/src/xterm.css" />
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/src/xterm.js"></script>
+    <script src="/addons/fit/fit.js"></script>
+  </head>
+  <body>
+    <div id="container"></div>
+    <script src="/vs/loader.js"></script>
+    <script>
+      function createEditor(id, value, language) {
+        require.config({ paths: { 'vs': '/vs' }});
+        require(['vs/editor/editor.main'], function() {
+          var editor =
+            monaco.editor.create(document.getElementById(id), {
+              value: value,
+              language: language
+            });
+        });
+      }
+    </script>
+    <script src="/build/vendors.js"></script>
+    <script src="/build/app.js"></script>
+  </body>
+</html>

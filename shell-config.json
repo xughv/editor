@@ -1,0 +1,23 @@
+{
+  "listen": {
+    "ip": "127.0.0.1",
+    "port": 2222
+  },
+  "user": {
+    "name": null,
+    "password": null
+  },
+  "ssh": {
+    "host": null,
+    "port": 22,
+    "term": "xterm-color",
+  },
+  "header": {
+    "text": "终端",
+    "background": "#fff"
+  },
+  "statusBackground": "#108ee9",
+  "options": {
+    "challengeButton": true
+  }
+}
