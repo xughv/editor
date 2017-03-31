@@ -10,11 +10,11 @@
   </head>
   <body>
     <div id="container"></div>
-    <script src="/vs/loader.js"></script>
+    <script src="/build/vs/loader.js"></script>
     <script>
       var _editors = {};
       function createEditor(id, value, language, saveFunc) {
-        require.config({ paths: { 'vs': '/vs' }});
+        require.config({ paths: { 'vs': '/build/vs' }});
         require(['vs/editor/editor.main'], function() {
           var editor =
             monaco.editor.create(document.getElementById(id), {

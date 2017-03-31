@@ -1,5 +1,6 @@
 const webpack = require('webpack');
 const path = require('path');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
     entry: {
@@ -56,6 +57,12 @@ module.exports = {
           name: 'vendors',
           filename: 'vendors.js'
         }),
+        new CopyWebpackPlugin([
+          {
+            from: 'node_modules/monaco-editor/min/vs',
+            to: 'vs',
+          }
+        ])
         //
         // new webpack.DefinePlugin({
         //   'process.env': {

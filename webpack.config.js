@@ -1,5 +1,6 @@
 const webpack = require('webpack');
 const path = require('path');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
     entry: {
@@ -21,7 +22,7 @@ module.exports = {
       extensions: ['.js', '.jsx']
     },
     output: {
-        path: "./server/public/build/",
+        path: path.resolve(__dirname, "./server/public/build/"),
         // path: "/",
         // publicPath: "/build/",
         filename: "[name].bundle.js"
@@ -69,6 +70,13 @@ module.exports = {
             compress: {
                 warnings: false
             }
-        })
+        }),
+
+        new CopyWebpackPlugin([
+          {
+            from: 'node_modules/monaco-editor/min/vs',
+            to: 'vs',
+          }
+        ])
     ]
 };
