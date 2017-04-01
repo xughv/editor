@@ -1,8 +1,6 @@
 {
-  "listen": {
-    "ip": "127.0.0.1",
-    "port": 2222
-  },
+  "host": "127.0.0.1",
+  "port": 8000,
   "user": {
     "name": null,
     "password": null
@@ -10,11 +8,7 @@
   "ssh": {
     "host": null,
     "port": 22,
-    "term": "xterm-color",
-  },
-  "header": {
-    "text": "终端",
-    "background": "#fff"
+    "term": "xterm-color"
   },
   "statusBackground": "#108ee9",
   "options": {
