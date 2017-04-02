@@ -58,10 +58,8 @@ module.exports = {
           filename: 'vendors.js'
         }),
         new CopyWebpackPlugin([
-          {
-            from: 'node_modules/monaco-editor/min/vs',
-            to: 'vs',
-          }
+          { from: 'node_modules/monaco-editor/min/vs', to: 'vs' },
+          { from: 'node_modules/xterm/dist', to: 'xterm' }
         ])
         //
         // new webpack.DefinePlugin({

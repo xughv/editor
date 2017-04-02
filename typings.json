@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "express": "registry:npm/express#4.14.0+20170217205433",
+    "ssh2": "registry:dt/ssh2#0.5.0+20161228203806"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "host": "127.0.0.1",
+  "port": 2222,
+
+  "ssh": {
+    "name": null,
+    "password": null,
+    "host": null,
+    "port": 22,
+    "term": "xterm-color"
+  },
+
+  "statusBackground": "#108ee9"
+
+}
