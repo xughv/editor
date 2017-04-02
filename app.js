@@ -78,5 +78,8 @@ server.listen({
 });
 
 // socket.io connection
-const connection = require('./server/shell').connection;
-io.on('connection', connection);
+const shellConn = require('./server/shell').connection;
+io.of('/shell').on('connection', shellConn);
+
+const fileConn = require('./server/file').connection;
+io.of('/file').on('connection', fileConn);
