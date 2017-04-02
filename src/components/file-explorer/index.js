@@ -30,6 +30,7 @@ export default class FileExplorer extends React.Component {
     this.props.openFile(info.path);
   }
 
+  // 展开结点加载数据
   onLoadData = (treeNode) => {
     return new Promise((resolve) => {
       const treeData = [...this.state.treeData];
@@ -43,7 +44,7 @@ export default class FileExplorer extends React.Component {
           data.forEach((item) => {
             if (key.indexOf(item.key) === 0) {
               if (key === item.key) {
-                item.children = chirdren;
+                item.children = item.children ? this.mergeDate(item.children, chirdren) : chirdren;
                 return;
               }
               else if (item.children) loop(item.children);
@@ -58,6 +59,7 @@ export default class FileExplorer extends React.Component {
     });
   }
 
+  // 初始化根节点
   init = (root) => {
     const rootNode = {
       name: getFileName(root),
@@ -67,6 +69,7 @@ export default class FileExplorer extends React.Component {
     this.setState({ treeData: [ rootNode ] });
   }
 
+  // 将响应结果转换为树结点格式
   parse = (data, parentKey) => {
     const res = [];
     let cnt = 0;
@@ -99,6 +102,16 @@ export default class FileExplorer extends React.Component {
     }
 
     return res;
+  }
+
+  // 合并子节点的children数据
+  mergeDate = (oldData, newDate) => {
+    for (var key in newDate) {
+      if (newDate.hasOwnProperty(key) && oldData[key] && oldData[key].children) {
+        newDate[key].children = oldData[key].children;
+      }
+    }
+    return newDate;
   }
 
   render() {
