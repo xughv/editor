@@ -42,13 +42,16 @@ export default class FileExplorer extends React.Component {
         const loop = (data) => {
           data.forEach((item) => {
             if (key.indexOf(item.key) === 0) {
-              if (item.children) loop(item.children);
-              else item.children = chirdren;
+              if (key === item.key) {
+                item.children = chirdren;
+                return;
+              }
+              else if (item.children) loop(item.children);
             }
           });
         };
         loop(treeData);
-        
+
         this.setState({ treeData });
         resolve();
       });
