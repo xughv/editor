@@ -1,4 +1,14 @@
-app.get('/list', function(req, res, next) {
+const path = require('path');
+const ssh = require('ssh2').Client;
+
+exports.index = function(req, res) {
+    res.sendFile(path.join(__dirname + '/public/index.html'));
+    req.session.ssh.host = req.params.host;
+    req.session.ssh.port = req.query.port || 22;
+}
+
+
+exports.list = function(req, res, next) {
     var conn = new ssh();
     var ret = { dir: { data: "" }, file: { data: "" } };
 
@@ -41,15 +51,15 @@ app.get('/list', function(req, res, next) {
 
     })
     .connect({
-        host: config.ssh.host,
-        port: config.ssh.port,
-        username: config.user.name,
-        password: config.user.password
+        host: req.session.ssh.host,
+        port: req.session.ssh.port,
+        username: req.session.ssh.username,
+        password: req.session.ssh.password
     });
-});
+}
 
 
-app.get('/file', function(req, res, next) {
+exports.readFile = function(req, res, next) {
     var conn = new ssh();
     var ret = { data: "", err: 0 };
 
@@ -72,15 +82,15 @@ app.get('/file', function(req, res, next) {
 
     })
     .connect({
-        host: config.ssh.host,
-        port: config.ssh.port,
-        username: config.user.name,
-        password: config.user.password
+        host: req.session.ssh.host,
+        port: req.session.ssh.port,
+        username: req.session.ssh.username,
+        password: req.session.ssh.password
     });
-});
+}
 
 
-app.post('/file', function(req, res, next) {
+exports.writeFile = function(req, res, next) {
     var conn = new ssh();
     var ret = { data: "", err: 0 };
 
@@ -107,9 +117,9 @@ app.post('/file', function(req, res, next) {
         });
     })
     .connect({
-        host: config.ssh.host,
-        port: config.ssh.port,
-        username: config.user.name,
-        password: config.user.password
+        host: req.session.ssh.host,
+        port: req.session.ssh.port,
+        username: req.session.ssh.username,
+        password: req.session.ssh.password
     });
-});
+}
