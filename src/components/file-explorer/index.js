@@ -8,16 +8,15 @@ import './index.css';
 
 export default class FileExplorer extends React.Component {
 
+  socket = null;
+  tasks = [];
+
   state = {
     // { name: 'pNode 01', key: '0-0' },
     // { name: 'pNode 02', key: '0-1' },
     // { name: 'pNode 03', key: '0-2', isLeaf: true }
     treeData: [],
   }
-
-  socket = null;
-  tasks = [];
-  expandedKeys = [];
 
   // 结点信息表
   infoTable = {
@@ -54,7 +53,6 @@ export default class FileExplorer extends React.Component {
 
   componentDidMount() {
     this.initRoot(this.props.root);
-    setInterval(this.refresh, 3000);
   }
 
   onSelect = (selectedKeys) => {
@@ -74,20 +72,6 @@ export default class FileExplorer extends React.Component {
       if (!this.tasks[path]) {
         this.socket.emit('list', path);
         this.tasks[path] = { cb: resolve };
-      }
-    });
-  }
-
-  onExpand = (expandedKeys) => {
-    this.expandedKeys = expandedKeys;
-  }
-
-  refresh = () => {
-    this.expandedKeys.forEach(key => {
-      const path = this.infoTable.getByKey(key).path;
-      if (!this.tasks[path]) {
-        this.socket.emit('list', path);
-        this.tasks[path] = { };
       }
     });
   }
@@ -124,7 +108,7 @@ export default class FileExplorer extends React.Component {
         const children = this.parse(key, data);
         this.appendData(key, children);
 
-        if (this.tasks[path] && this.tasks[path].cb) {
+        if (this.tasks[path]) {
           this.tasks[path].cb();
         }
         this.tasks[path] = null;
@@ -177,15 +161,18 @@ export default class FileExplorer extends React.Component {
         // 确定key所在分支
         if (nodeKey.indexOf(item.key) === 0) {
           if (nodeKey === item.key) {
-            if (item.children) {
+            if (!item.children) {
+              item.children = chirdren;
+            } else {
               // 合并item子节点的children, 使跨级数据不会被消除
-              for (let key of chirdren) {
-                if (item.children[key] && item.children[key].children) {
+              for (let key in chirdren) {
+                if (chirdren.hasOwnProperty(key) &&
+                    item.children[key] &&
+                    item.children[key].children) {
                   chirdren[key].children = item.children[key].children;
                 }
               }
             }
-            item.children = chirdren;
             return;
           }
           else if (item.children) loop(item.children);
@@ -210,13 +197,7 @@ export default class FileExplorer extends React.Component {
     const treeNodes = loop(this.state.treeData);
 
     return (
-      <Tree
-        showIcon
-        showLine
-        onSelect={this.onSelect}
-        loadData={this.onLoadData}
-        onExpand={this.onExpand}
-      >
+      <Tree onSelect={this.onSelect} loadData={this.onLoadData}>
         {treeNodes}
       </Tree>
     );
