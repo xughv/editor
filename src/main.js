@@ -72,7 +72,7 @@ export default class App extends React.Component {
   render() {
     return (
       <Layout style={{ height: '100%' }}>
-        <Sider>
+        <Sider id="file-explorer-tree">
           <FileExplorer root={this.props.root} openFile={this.openFile} />
         </Sider>
         <Layout style={{ overflow: 'hidden' }}>
