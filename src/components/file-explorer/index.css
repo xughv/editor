@@ -1,3 +1,43 @@
 .ant-tree {
   width: 280px;
 }
+
+#file-explorer-tree .ant-tree-iconEle {
+  position: absolute;
+  left: 0;
+  background: #f3f3f3;
+}
+
+#file-explorer-tree .ant-tree-iconEle::after {
+  font-size: 12px;
+  zoom: 1;
+  display: inline-block;
+  font-family: 'anticon';
+  text-rendering: optimizeLegibility;
+  color: #999;
+  transition: transform .3s ease;
+  margin-top: 2px;
+  background: #f3f3f3;
+}
+
+#file-explorer-tree .ant-tree-iconEle.ant-tree-icon__docu::after {
+  content: "\E664";
+}
+
+#file-explorer-tree .ant-tree-iconEle.ant-tree-icon__open::after {
+  content: "\E699";
+}
+
+#file-explorer-tree .ant-tree-iconEle.ant-tree-icon__close::after {
+  content: "\E662";
+}
+
+#file-explorer-tree .ant-tree-switcher {
+  position: relative;
+  z-index: 1;
+  background: transparent;
+}
+
+#file-explorer-tree .ant-tree-switcher::after {
+  opacity: 0;
+}

@@ -7,58 +7,6 @@ exports.index = function(req, res) {
     req.session.ssh.port = req.query.port || 22;
 }
 
-
-exports.list = function(req, res, next) {
-    var conn = new ssh();
-    var ret = { dir: { data: "" }, file: { data: "" } };
-
-    conn.on('ready', function() {
-
-        var cnt = 2;
-        var cmd = 'find ' + req.query.path + ' -maxdepth 1 -type ';
-
-        conn.exec(cmd + 'd', function(err, stream) {
-            if (err) throw err;
-            stream.on('close', function(code, signal) {
-                if (!--cnt) {
-                    conn.end();
-                    res.json(ret);
-                }
-            })
-            .on('data', function(data) {
-                ret.dir.data += data.toString();
-            })
-            .stderr.on('data', function(data) {
-                ret.dir.err = 1
-            });
-        });
-
-        conn.exec(cmd + 'f', function(err, stream) {
-            if (err) throw err;
-            stream.on('close', function(code, signal) {
-                if (!--cnt) {
-                    conn.end();
-                    res.json(ret);
-                }
-            })
-            .on('data', function(data) {
-                ret.file.data += data.toString();
-            })
-            .stderr.on('data', function(data) {
-                ret.file.err = 1
-            });
-        });
-
-    })
-    .connect({
-        host: req.session.ssh.host,
-        port: req.session.ssh.port,
-        username: req.session.ssh.username,
-        password: req.session.ssh.password
-    });
-}
-
-
 exports.readFile = function(req, res, next) {
     var conn = new ssh();
     var ret = { data: "", err: 0 };

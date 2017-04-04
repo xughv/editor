@@ -25,7 +25,7 @@
     "xterm": "^2.4.0"
   },
   "devDependencies": {
-    "antd": "^2.8.3",
+    "antd": "^2.9.0",
     "babel-core": "^6.18.0",
     "babel-loader": "^6.2.4",
     "babel-plugin-import": "^1.1.1",

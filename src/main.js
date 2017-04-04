@@ -9,7 +9,7 @@ import './main.css';
 
 import FileExplorer from './components/file-explorer';
 import Tabbar from './components/tabbar';
-import QTerminal from './components/qterminal';
+import Term from './components/term';
 
 export default class App extends React.Component {
   
@@ -72,7 +72,7 @@ export default class App extends React.Component {
   render() {
     return (
       <Layout style={{ height: '100%' }}>
-        <Sider>
+        <Sider id="file-explorer-tree">
           <FileExplorer root={this.props.root} openFile={this.openFile} />
         </Sider>
         <Layout style={{ overflow: 'hidden' }}>
@@ -84,7 +84,7 @@ export default class App extends React.Component {
               closeFile={this.closeFile}  />
           </Content>
           <Footer>
-            <QTerminal />
+            <Term />
           </Footer>
         </Layout>
       </Layout>
