@@ -8,15 +8,16 @@ import './index.css';
 
 export default class FileExplorer extends React.Component {
 
-  socket = null;
-  tasks = [];
-
   state = {
     // { name: 'pNode 01', key: '0-0' },
     // { name: 'pNode 02', key: '0-1' },
     // { name: 'pNode 03', key: '0-2', isLeaf: true }
     treeData: [],
   }
+
+  socket = null;
+  tasks = [];
+  expandedKeys = [];
 
   // 结点信息表
   infoTable = {
@@ -53,6 +54,7 @@ export default class FileExplorer extends React.Component {
 
   componentDidMount() {
     this.initRoot(this.props.root);
+    setInterval(this.refresh, 3000);
   }
 
   onSelect = (selectedKeys) => {
@@ -72,6 +74,26 @@ export default class FileExplorer extends React.Component {
       if (!this.tasks[path]) {
         this.socket.emit('list', path);
         this.tasks[path] = { cb: resolve };
+      }
+    });
+  }
+
+  // 更新展开结点列表
+  onExpand = (expandedKeys) => {
+    this.expandedKeys = expandedKeys.sort();
+  }
+
+  // 已展开目录定时刷新
+  refresh = () => {
+    if (this.expandedKeys.length <= 0) return;
+    // 当前展开的最外层结点
+    const nodeKey = this.expandedKeys[0], nodeData = {};
+
+    this.expandedKeys.forEach(key => {
+      const path = this.infoTable.getByKey(key).path;
+      if (!this.tasks[path]) {
+        this.socket.emit('list', path);
+        this.tasks[path] = {};
       }
     });
   }
@@ -103,13 +125,14 @@ export default class FileExplorer extends React.Component {
       // 获取某个路径下文件列表
       socket.on('list', (data) => {
         const path = data.path;
-        // 请求过程中key可能改变, 所以用path重新获取
-        const key = this.infoTable.getByPath(path).key;
-        const children = this.parse(key, data);
-        this.appendData(key, children);
-
         if (this.tasks[path]) {
-          this.tasks[path].cb();
+          // 请求过程中key可能改变, 所以用path重新获取
+          const key = this.infoTable.getByPath(path).key;
+          const children = this.parse(key, data);
+          this.appendData(key, children);
+          if (this.tasks[path].cb) {
+            this.tasks[path].cb();
+          }
         }
         this.tasks[path] = null;
       });
@@ -153,7 +176,7 @@ export default class FileExplorer extends React.Component {
   }
 
   // 在key为nodeKey的结点添加children数据
-  appendData = (nodeKey, chirdren) => {
+  appendData = (nodeKey, children) => {
     const treeData = [...this.state.treeData];
 
     const loop = (node) => {
@@ -161,18 +184,22 @@ export default class FileExplorer extends React.Component {
         // 确定key所在分支
         if (nodeKey.indexOf(item.key) === 0) {
           if (nodeKey === item.key) {
-            if (!item.children) {
-              item.children = chirdren;
-            } else {
-              // 合并item子节点的children, 使跨级数据不会被消除
-              for (let key in chirdren) {
-                if (chirdren.hasOwnProperty(key) &&
-                    item.children[key] &&
-                    item.children[key].children) {
-                  chirdren[key].children = item.children[key].children;
+            if (item.children) {
+              // 合并item原有数据(比较name), 使跨级数据不会消除
+              const preChildren = item.children;
+              preChildren.forEach(preItem => {
+                if (!preItem.children) return;
+
+                for (let item of children) {
+                  if (preItem.name === item.name) {
+                    item.children = preItem.children;
+                    break;
+                  }
                 }
-              }
+
+              });
             }
+            item.children = children;
             return;
           }
           else if (item.children) loop(item.children);
@@ -197,7 +224,13 @@ export default class FileExplorer extends React.Component {
     const treeNodes = loop(this.state.treeData);
 
     return (
-      <Tree onSelect={this.onSelect} loadData={this.onLoadData}>
+      <Tree
+        showIcon
+        showLine
+        onSelect={this.onSelect}
+        loadData={this.onLoadData}
+        onExpand={this.onExpand}
+      >
         {treeNodes}
       </Tree>
     );
