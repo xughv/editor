@@ -92,4 +92,4 @@ export default class App extends React.Component {
   }
 };
 
-ReactDOM.render(<App root="/data" />, document.getElementById('container'));
+ReactDOM.render(<App root="/" />, document.getElementById('container'));
